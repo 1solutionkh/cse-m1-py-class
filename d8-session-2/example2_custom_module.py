@@ -1,6 +1,6 @@
+import greetings
 print("--- Example 2: Using a Custom Module ---")
 
-import greetings
 
 print("1. Hello")
 print("2. Welcome")
