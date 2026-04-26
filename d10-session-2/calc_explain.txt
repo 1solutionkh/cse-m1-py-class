@@ -1,0 +1,106 @@
+Let's break down the calculator code piece by piece so you understand exactly what's happening.
+1. Importing Tkinter
+pythonimport tkinter as tk
+This imports the Tkinter library and gives it a shorter nickname tk so we don't have to type tkinter every time. Now tk.Button means the same as tkinter.Button.
+
+2. Creating the Main Window
+pythonwindow = tk.Tk()
+window.title("Calculator")
+window.geometry("300x400")
+window.resizable(False, False)
+tk.Tk() creates the main application window — think of it as the empty canvas everything will sit on. Then:
+
+.title() sets the text shown in the window's title bar
+.geometry("300x400") sets the window size (300 pixels wide, 400 tall)
+.resizable(False, False) prevents the user from resizing the window (the two Falses are for width and height)
+
+3. Creating the Display
+pythondisplay = tk.Entry(window, font=("Arial", 20), borderwidth=2,
+                   relief="solid", justify="right")
+display.grid(row=0, column=0, columnspan=4, padx=10, pady=10,
+             ipady=10, sticky="we")
+An Entry widget is a single-line text box — perfect for showing numbers. The first argument window tells Tkinter where to put it (inside our main window). The other options are:
+
+font=("Arial", 20) — font name and size
+borderwidth=2 and relief="solid" — gives it a visible border
+justify="right" — aligns text to the right (like a real calculator)
+
+Then .grid() places the widget in the window:
+
+row=0, column=0 — top-left position
+columnspan=4 — stretches it across 4 columns (so it spans the full width above the buttons)
+padx=10, pady=10 — outer space around the widget
+ipady=10 — inner padding (makes the box taller)
+sticky="we" — stretches it West-to-East (full width)
+
+4. The Three Functions
+Click function — adds a character to the display:
+pythondef click(value):
+    current = display.get()         # Get whatever's currently in the display
+    display.delete(0, tk.END)       # Erase it
+    display.insert(0, current + str(value))  # Put it back + new character
+For example, if the display shows 12 and you click 5, this function reads 12, erases it, and writes back 125.
+Clear function — wipes the display:
+pythondef clear():
+    display.delete(0, tk.END)
+0 is the start position and tk.END is the end — so this deletes everything in the entry box.
+Calculate function — evaluates the math:
+pythondef calculate():
+    try:
+        result = eval(display.get())     # Evaluate the expression
+        display.delete(0, tk.END)
+        display.insert(0, str(result))   # Show the result
+    except Exception:
+        display.delete(0, tk.END)
+        display.insert(0, "Error")       # If something goes wrong
+eval() takes a string like "5+3*2" and returns the calculated number 11. The try/except block catches errors (like dividing by zero) and shows "Error" instead of crashing the program.
+
+5. The Button List
+pythonbuttons = [
+    ("7", 1, 0), ("8", 1, 1), ("9", 1, 2), ("/", 1, 3),
+    ("4", 2, 0), ("5", 2, 1), ("6", 2, 2), ("*", 2, 3),
+    ("1", 3, 0), ("2", 3, 1), ("3", 3, 2), ("-", 3, 3),
+    ("0", 4, 0), (".", 4, 1), ("+", 4, 3),
+]
+This is a list of tuples. Each tuple has three values: (button_text, row, column). It's just data that describes where each button should go. We do this so we can create all buttons in a loop instead of writing 14 separate lines.
+
+6. Creating Buttons in a Loop
+pythonfor (text, row, col) in buttons:
+    btn = tk.Button(window, text=text, font=("Arial", 16),
+                    width=5, height=2,
+                    command=lambda t=text: click(t))
+    btn.grid(row=row, column=col, padx=2, pady=2)
+For each tuple in the list, we create a Button widget:
+
+text=text — the label shown on the button
+width=5, height=2 — button size (in character units, not pixels)
+command=lambda t=text: click(t) — the function to run when clicked
+
+The lambda trick is important. Why not just write command=click(text)? Because that would call the function immediately when creating the button, instead of waiting for a click. The lambda creates a small anonymous function that runs click(text) only when the button is actually pressed.
+The t=text part captures the current value of text at the moment the lambda is created. Without this, every button would end up using the last value of text from the loop (a classic Python gotcha called "late binding").
+
+7. The Equals Button
+pythonequals_btn = tk.Button(window, text="=", font=("Arial", 16),
+                       width=5, height=2, bg="lightblue",
+                       command=calculate)
+equals_btn.grid(row=4, column=2, padx=2, pady=2)
+We create the equals button separately because it has special behavior — instead of adding to the display, it triggers calculate(). The bg="lightblue" gives it a different background color so it stands out.
+
+8. The Clear Button
+pythonclear_btn = tk.Button(window, text="Clear", font=("Arial", 16),
+                      bg="salmon", command=clear)
+clear_btn.grid(row=5, column=0, columnspan=4, padx=2, pady=5,
+               sticky="we")
+Same idea, but columnspan=4 makes it stretch across all 4 columns at the bottom, and sticky="we" makes it fill that space horizontally.
+
+9. Starting the Application
+pythonwindow.mainloop()
+This is the most important line. mainloop() starts Tkinter's event loop — it keeps the window open and listens for events (clicks, key presses, etc.). Without this, the window would appear and immediately close.
+Think of it like this: everything before mainloop() sets up the GUI, and mainloop() actually runs it.
+The Big Picture
+The flow is:
+
+Create the window
+Add widgets (display + buttons)
+Define what happens when buttons are clicked
+Start the event loop to make it interactive
