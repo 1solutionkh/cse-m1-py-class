@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ student.name }}</title>
+    <style>
+        body { font-family: Arial; max-width: 600px; margin: 40px auto; padding: 20px; }
+        .card { background: #f4f6f8; padding: 20px; border-radius: 8px; }
+        .grade { display: inline-block; background: #3498db; color: white;
+                 padding: 5px 12px; margin: 3px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <a href="/students">← Back to list</a>
+    <h1>{{ student.name }}</h1>
+    <div class="card">
+        <p><strong>Age:</strong> {{ student.age }}</p>
+        <p><strong>Status:</strong>
+            {{ "Active" if student.active else "Inactive" }}
+        </p>
+        <p><strong>Grades:</strong>
+            {% for g in student.grades %}
+                <span class="grade">{{ g }}</span>
+            {% endfor %}
+        </p>
+        <p><strong>Average:</strong> {{ "%.2f"|format(student.average) }}</p>
+    </div>
+</body>
+</html>

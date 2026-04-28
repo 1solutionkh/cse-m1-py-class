@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Students</title>
+    <style>
+        body { font-family: Arial; max-width: 800px; margin: 40px auto; padding: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+        th { background: #2c3e50; color: white; }
+        .active { color: green; font-weight: bold; }
+        .inactive { color: red; }
+        tr:nth-child(even) { background: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h1>All Students ({{ students|length }})</h1>
+    <a href="/">Back to home</a>
+    <table>
+        <tr>
+            <th>Name</th><th>Age</th><th>Average</th><th>Status</th><th>Profile</th>
+        </tr>
+        {% for s in students %}
+        <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.age }}</td>
+            <td>{{ "%.2f"|format(s.average) }}</td>
+            <td>
+                {% if s.active %}
+                    <span class="active">Active</span>
+                {% else %}
+                    <span class="inactive">Inactive</span>
+                {% endif %}
+            </td>
+            <td><a href="/student/{{ s.name }}">View</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

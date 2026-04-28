@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <style>
+        body { font-family: Arial; max-width: 400px; margin: 80px auto; padding: 20px; }
+        input, button { padding: 10px; width: 100%; margin: 5px 0; box-sizing: border-box; }
+        button { background: #3498db; color: white; border: none; cursor: pointer; }
+        button:hover { background: #2980b9; }
+        .flash { padding: 10px; margin: 10px 0; border-radius: 4px; }
+        .error { background: #ffd5d5; color: #b00; }
+        .success { background: #d4edda; color: #155724; }
+    </style>
+</head>
+<body>
+    <h1>Login</h1>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for cat, msg in messages %}
+            <div class="flash {{ cat }}">{{ msg }}</div>
+        {% endfor %}
+    {% endwith %}
+    <form method="POST">
+        <input type="text" name="username" placeholder="Enter username" required>
+        <button type="submit">Login</button>
+    </form>
+</body>
+</html>

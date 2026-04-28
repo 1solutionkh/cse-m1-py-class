@@ -3,7 +3,7 @@ import tkinter as tk
 # Create the main window
 window = tk.Tk()
 window.title("Calculator")
-window.geometry("300x400")
+window.geometry("350x400")
 window.resizable(False, False)
 
 # Entry widget to display numbers and results
