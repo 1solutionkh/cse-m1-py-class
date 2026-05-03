@@ -7,9 +7,9 @@ from flask import Flask, render_template
 app = Flask(__name__)
 
 students = [
-    {"name": "Sathya", "age": 20, "grades": [85, 92, 78], "active": True},
+    {"name": "Satya", "age": 20, "grades": [85, 92, 78], "active": True},
     {"name": "Mary",   "age": 22, "grades": [70, 65, 80], "active": True},
-    {"name": "Bob",    "age": 19, "grades": [95, 88, 91], "active": False},
+    {"name": "Bob",    "age": 19, "grades": [95, 88, 91], "active": True},
     {"name": "Anna",   "age": 21, "grades": [60, 72, 68], "active": True},
 ]
 
@@ -28,7 +28,8 @@ def student_list():
 
 @app.route("/student/<name>")
 def student_detail(name):
-    student = next((s for s in students if s["name"].lower() == name.lower()), None)
+    student = next(
+        (s for s in students if s["name"].lower() == name.lower()), None)
     if not student:
         return render_template("not_found.html", name=name), 404
     student["average"] = sum(student["grades"]) / len(student["grades"])
