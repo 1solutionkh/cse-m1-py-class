@@ -6,5 +6,6 @@ b = np.array([10, 20, 30, 40])
 
 print(a + b)        # [11 22 33 44]  — element-wise
 print(a * b)        # [10 40 90 160]
-print(a ** 2)       # [1 4 9 16]
+print(a ** 3)       # [1 4 9 16]
 print(a > 2)        # [False False True True]
+print(a.ndim)       # 1
